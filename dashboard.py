@@ -1,5 +1,6 @@
 import pandas as pd #dataframes
 import yfinance as yf #stock data
+#if Yahoo does not accept the use of the data, nasdaq-data-link
 import numpy as np #data science
 import matplotlib.pyplot as plt #calc
 import plotly.express as px
