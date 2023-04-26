@@ -11,7 +11,7 @@
 
 .navbar {
     background:white;
-    height: 80px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,7 +24,7 @@
 .navbar__container {
     display: flex;
     justify-content: space-between;
-    height: 80px;
+    height: 50px;
     width: 100%;
     max-width: 1300px;
     margin-right: auto;
@@ -52,7 +52,7 @@
 }
 
 .navbar__item {
-    height: 80px;
+    height: 50px;
 }
 
 .navbar__links {
@@ -72,14 +72,13 @@ a:hover {
 /* HERO */
 .hero {
     background-color: white;
-    height: 40vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .hero__container {
-    padding-top: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
