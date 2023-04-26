@@ -30,7 +30,7 @@ descriptive=pd.DataFrame(OMXHGI.loc[:,'simple_rtn'].describe(include='all'))
 print(descriptive)
 
 app.layout=html.Div([
-        html.Div(className='row', children='Dashboard', style={'textalign':'center', 'color':'green', 'fontSize':70}),
+        html.Div(className='row', children='Analysis', style={'textalign':'center', 'color':'#116466', 'fontSize':70}),
             dcc.Graph(figure=px.line(OMXHGI, y='Adj Close')),
                 dcc.Graph(figure=px.line(OMXHGI, y='cumulative_simple_rtn')),
                     dcc.Graph(figure=px.line(OMXHGI, y='simple_rtn').update_traces(line_color='gray')),
