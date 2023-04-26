@@ -95,6 +95,7 @@ a:hover {
 .main__content {
     color: black;
     padding: 1rem 0;
+    width: 70%;
 }
 
 .main__buttons {
