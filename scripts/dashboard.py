@@ -55,7 +55,6 @@ app.layout=dbc.Container([
     ], justify="between"),
 ])
 
-
 if __name__ == '__main__':
     app.run_server()
 
