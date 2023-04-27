@@ -12,7 +12,10 @@ from dash import Dash, dcc, html, dash_table
 app=Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 #Data downloading
-OMXHGI=yf.download("^GSPC",
+
+ticker="^OMXHGI"
+
+OMXHGI=yf.download(ticker,
                      start=None,
                      end=None,
                      progress=False)
