@@ -16,18 +16,14 @@ OMXHGI=yf.download("^GSPC",
                      end=None,
                      progress=False)
 
-print(OMXHGI.head()) #printing the data frame first rows
-
 OMXHGI=OMXHGI.loc[:,["Adj Close"]]
 
 OMXHGI["simple_rtn"]=OMXHGI["Adj Close"].pct_change()
 OMXHGI["log_rtn"]=np.log(OMXHGI["Adj Close"]/OMXHGI["Adj Close"].shift(1))
 OMXHGI["cumulative_simple_rtn"]=(OMXHGI["Adj Close"]/OMXHGI.iloc[0]['Adj Close']-1)
 OMXHGI=OMXHGI.dropna()
-print(OMXHGI.head())
 
 descriptive=pd.DataFrame(OMXHGI.loc[:,'simple_rtn'].describe(include='all'))
-print(descriptive)
 
 app.layout=html.Div([
         html.Div(className='row', children='Analysis', style={'textalign':'center', 'color':'#116466', 'fontSize':70}),
