@@ -32,6 +32,7 @@ df["log_rtn"]=np.log(df["Adj Close"]/df["Adj Close"].shift(1))
 df["cumulative_simple_rtn"]=(df["Adj Close"]/df.iloc[0]['Adj Close']-1)
 df=df.dropna()
 print(df.head())
+
 ##########################################
 #Building graphs and tables
 ##########################################
