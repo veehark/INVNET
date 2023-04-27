@@ -32,24 +32,31 @@ OMXHGI=OMXHGI.dropna()
 table_desc=pd.DataFrame(OMXHGI.loc[:,'simple_rtn'].describe(include='all'))
 
 fig_price=px.line(OMXHGI, y='Adj Close')
-fig_price.update_layout(margin=dict(l=2, r=2, b=5, t=5))
+fig_price.update_layout(margin=dict(l=2, r=2, b=5, t=5), xaxis=dict(showspikes=True,
+                            spikethickness=1,
+                            spikedash='dot',
+                            spikemode='across'))
 
 fig_rtn=px.line(OMXHGI, y='simple_rtn').update_traces(line_color='gray')
-fig_rtn.update_layout(margin=dict(l=2, r=2, b=5, t=5))
+fig_rtn.update_layout(margin=dict(l=2, r=2, b=5, t=5), xaxis=dict(showspikes=True,
+                            spikethickness=1,
+                            spikedash='dot',
+                            spikemode='across'))
 
 fig_hist=px.histogram(OMXHGI, x='simple_rtn', nbins=1000)
-fig_hist.update_layout(margin=dict(l=2, r=2, b=5, t=5))
+fig_hist.update_layout(margin=dict(l=2, r=2, b=5, t=5), xaxis=dict(showspikes=True,
+                            spikethickness=1,
+                            spikedash='dot',
+                            spikemode='across'))
 
-#config={'staticPlot': True}
-
-#New style
+#Dash building
 app.layout=dbc.Container([
     dbc.Row([
         dbc.Col([
-            dcc.Graph(figure=fig_price)
+            dcc.Graph(figure=fig_price, config={'displayModeBar':False, 'scrollZoom':False, 'dragMode':False, 'editable':False})
         ], width=6),
         dbc.Col([
-            dcc.Graph(figure=fig_rtn)
+            dcc.Graph(figure=fig_rtn, config={'displayModeBar':False, 'scrollZoom':False, 'dragMode':False, 'editable':False})
         ], width=6)
     ], justify="between"),
     dbc.Row([
@@ -58,7 +65,7 @@ app.layout=dbc.Container([
                                  [{"name": i, "id": i} for i in table_desc.columns])
         ], width=3),
         dbc.Col([
-            dcc.Graph(figure=fig_hist)
+            dcc.Graph(figure=fig_hist, config={'displayModeBar':False, 'scrollZoom':False, 'dragMode':False, 'editable':False})
         ], width=6)
     ], justify="between"),
 ])
