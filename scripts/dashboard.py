@@ -4,6 +4,7 @@ import yfinance as yf #stock data
 import numpy as np #data science
 import matplotlib.pyplot as plt #calc
 import plotly.express as px
+import plotly.graph_objects as go
 import pyfolio as pf
 import dash_bootstrap_components as dbc
 import dash
@@ -31,10 +32,15 @@ OMXHGI=OMXHGI.dropna()
 table_desc=pd.DataFrame(OMXHGI.loc[:,'simple_rtn'].describe(include='all'))
 
 fig_price=px.line(OMXHGI, y='Adj Close')
+fig_price.update_layout(margin=dict(l=2, r=2, b=5, t=5))
 
 fig_rtn=px.line(OMXHGI, y='simple_rtn').update_traces(line_color='gray')
+fig_rtn.update_layout(margin=dict(l=2, r=2, b=5, t=5))
 
-fig_hist=px.histogram(OMXHGI, x='simple_rtn', nbins=3000)
+fig_hist=px.histogram(OMXHGI, x='simple_rtn', nbins=1000)
+fig_hist.update_layout(margin=dict(l=2, r=2, b=5, t=5))
+
+#config={'staticPlot': True}
 
 #New style
 app.layout=dbc.Container([
@@ -45,7 +51,7 @@ app.layout=dbc.Container([
         dbc.Col([
             dcc.Graph(figure=fig_rtn)
         ], width=6)
-    ]),
+    ], justify="between"),
     dbc.Row([
         dbc.Col([
             dash_table.DataTable(table_desc.to_dict('records'),
