@@ -12,7 +12,9 @@ from dash import Dash, dcc, html, dash_table
 
 app=Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+##########################################
 #Data downloading
+##########################################
 ticker="^OMXHGI"
 
 OMXHGI=yf.download(ticker,
@@ -22,13 +24,17 @@ OMXHGI=yf.download(ticker,
 
 OMXHGI=OMXHGI.loc[:,["Adj Close"]]
 
+##########################################
 #Return calculations
+##########################################
 OMXHGI["simple_rtn"]=OMXHGI["Adj Close"].pct_change()
 OMXHGI["log_rtn"]=np.log(OMXHGI["Adj Close"]/OMXHGI["Adj Close"].shift(1))
 OMXHGI["cumulative_simple_rtn"]=(OMXHGI["Adj Close"]/OMXHGI.iloc[0]['Adj Close']-1)
 OMXHGI=OMXHGI.dropna()
 
+##########################################
 #Building graphs and tables
+##########################################
 table_desc=pd.DataFrame(OMXHGI.loc[:,'simple_rtn'].describe(include='all'))
 
 fig_price=px.line(OMXHGI, y='Adj Close')
@@ -49,7 +55,9 @@ fig_hist.update_layout(margin=dict(l=2, r=2, b=5, t=5), xaxis=dict(showspikes=Tr
                             spikedash='dot',
                             spikemode='across'))
 
+##########################################
 #Dash building
+##########################################
 app.layout=dbc.Container([
     dbc.Row([
         dbc.Col([
