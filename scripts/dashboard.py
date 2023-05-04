@@ -76,28 +76,29 @@ fig_drawdown.update_layout(yaxis_tickformat=',.2f',
 
 #Time series decomposition
 # Decompose the time series into its components
-decomp = seasonal_decompose(df, model="additive", period=1)
+df=df.sort_index()
+decomp = seasonal_decompose(df['log_rtn'], model="additive", period=1)
 
 # Extract the trend, seasonal, cyclical, and irregular components
-trend = decomp.trend
-seasonal = decomp.seasonal
-cycle = decomp.resid
-irregular = df - trend - seasonal - cycle
+print(decomp.trend.head())
+print(decomp.seasonal.head())
+print(decomp.resid.head())
+print(decomp.observed.head())
 
 # Create a Plotly figure to visualize each component
 fig_decomposition = go.Figure()
 
 # Add the trend component to the figure
-fig_decomposition.add_trace(go.Scatter(x=df.index, y=trend, mode="lines", name="Trend"))
+fig_decomposition.add_trace(go.Scatter(x=df.index, y='trend', mode="lines", name="Trend"))
 
 # Add the seasonal component to the figure
-fig_decomposition.add_trace(go.Scatter(x=df.index, y=seasonal, mode="lines", name="Seasonal"))
+fig_decomposition.add_trace(go.Scatter(x=df.index, y='seasonal', mode="lines", name="Seasonal"))
 
 # Add the cyclical component to the figure
-fig_decomposition.add_trace(go.Scatter(x=df.index, y=cycle, mode="lines", name="Cyclical"))
+fig_decomposition.add_trace(go.Scatter(x=df.index, y='recid', mode="lines", name="Cyclical"))
 
 # Add the irregular component to the figure
-fig_decomposition.add_trace(go.Scatter(x=df.index, y=irregular, mode="lines", name="Irregular"))
+fig_decomposition.add_trace(go.Scatter(x=df.index, y='irregular', mode="lines", name="Irregular"))
 
 # Customize the layout of the figure
 fig_decomposition.update_layout(
@@ -130,6 +131,9 @@ app.layout=dbc.Container([
         dbc.Col([
                 dash_table.DataTable(table_desc.to_dict('records'))
             ], width=3),
+        dbc.Col([
+            dcc.Graph(figure=fig_decomposition, config={'displayModeBar':False, 'scrollZoom':False, 'dragMode':False, 'editable':False})
+        ])
     ])
 ])
 
