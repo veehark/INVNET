@@ -1,3 +1,4 @@
+#py -m pip install
 import pandas as pd #dataframes
 import yfinance as yf #stock data
 #if Yahoo does not accept the use of the data, nasdaq-data-link
@@ -9,6 +10,7 @@ import pyfolio as pf
 import dash_bootstrap_components as dbc
 import dash
 from dash import Dash, dcc, html, dash_table
+from statsmodels.tsa.seasonal import seasonal_decompose
 
 app=Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -31,7 +33,6 @@ df["simple_rtn"]=df["Adj Close"].pct_change()
 df["log_rtn"]=np.log(df["Adj Close"]/df["Adj Close"].shift(1))
 df["cumulative_simple_rtn"]=(df["Adj Close"]/df.iloc[0]['Adj Close']-1)
 df=df.dropna()
-print(df.head())
 
 ##########################################
 #Building graphs and tables
@@ -72,6 +73,38 @@ fig_drawdown = px.area(df, color=drawdown < 0,
 fig_drawdown.update_layout(yaxis_tickformat=',.2f',
                   xaxis_rangeslider_visible=True,
                   margin=dict(l=2, r=2, b=5, t=35))
+
+#Time series decomposition
+# Decompose the time series into its components
+decomp = seasonal_decompose(df, model="additive", period=1)
+
+# Extract the trend, seasonal, cyclical, and irregular components
+trend = decomp.trend
+seasonal = decomp.seasonal
+cycle = decomp.resid
+irregular = df - trend - seasonal - cycle
+
+# Create a Plotly figure to visualize each component
+fig_decomposition = go.Figure()
+
+# Add the trend component to the figure
+fig_decomposition.add_trace(go.Scatter(x=df.index, y=trend, mode="lines", name="Trend"))
+
+# Add the seasonal component to the figure
+fig_decomposition.add_trace(go.Scatter(x=df.index, y=seasonal, mode="lines", name="Seasonal"))
+
+# Add the cyclical component to the figure
+fig_decomposition.add_trace(go.Scatter(x=df.index, y=cycle, mode="lines", name="Cyclical"))
+
+# Add the irregular component to the figure
+fig_decomposition.add_trace(go.Scatter(x=df.index, y=irregular, mode="lines", name="Irregular"))
+
+# Customize the layout of the figure
+fig_decomposition.update_layout(
+    title="One-Day Asset Return Decomposition",
+    xaxis_title="Date",
+    yaxis_title="Value",
+)
 
 ##########################################
 #Dash building
